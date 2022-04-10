@@ -1,7 +1,7 @@
 <template>
   <div class="header-wrapper" ref="wrap">
     <!-- 顶部 -->
-    <div class="wrap" >
+    <div class="wrap">
       <h1 class="logo" @click="GoHome"></h1>
       <ul>
         <li @click="GoHome" :class="{ active: isActive == 1 }">
@@ -18,14 +18,19 @@
         </li>
         <li>商城</li>
         <li>音乐人</li>
-        <li  :class="{ active: isActive == 4 }">
+        <li @click="tab" :class="{ active: isActive == 4 }">
           下载客户端
-          <div :class="{ cor4: isActive == 4 }" v-show="isActive == 4"></div>
+          <div 
+            :class="{ cor4: isActive == 4 }"
+            v-show="isActive == 4"
+          ></div>
         </li>
 
         <i class="hot"></i>
       </ul>
-      <a class="login pointer" @click="getCode" v-if="!isLogin"><em>登录</em></a>
+      <a class="login pointer" @click="getCode" v-if="!isLogin"
+        ><em>登录</em></a
+      >
       <div class="loginSuccess" v-else>
         <img :src="userImg" v-show="userImg != ''" @mouseenter="showUserBox" />
       </div>
@@ -41,37 +46,51 @@
         @blur="closeSearch"
         @keyup.enter="Search"
       />
-      <div class="u-lst clearfix" style="display:none" ref="ulst">
-          <div class="schlist">
-            <p class="note">
-              <a class="underline">搜索"{{searchText}}"相关用户&gt;</a>
-            </p>
-            <div class="rap clearfix">
-              <div class="item clearfix">
-                <ul class="clearfix" v-for="item,index in searchList.order" :key="index">
-                  <div class="hd clearfix">
-                    <i class="songs" v-show="item=='songs'"></i>
-                    <i class="artists" v-show="item=='artists'"></i>
-                     <i class="albums" v-show="item=='albums'"></i>
-                    <i class="playlists" v-show="item=='playlists'"></i>  
-                    <span v-show="item=='songs'">单曲</span>
-                    <span v-show="item=='artists'">歌手</span>
-                    <span v-show="item=='albums'">专辑</span>
-                    <span v-show="item=='playlists'">歌单</span>
-                  </div>
-                  <div class="odd clearfix">
-                    <li v-for="attr,index in searchList[`${item}`]" :key="index">
-                      <i class="over" @click="goSearch(item,attr.id)">
-                        {{attr.name}}-
-                        <span v-show="item=='songs'" v-for="t,index in attr.artists" :key="index">{{t.name}} </span>
-                        <span v-if="item == 'albums'">{{attr.artist.name}}</span>
-                      </i>
-                    </li>
-                  </div>
-                </ul>
-              </div>
+      <div class="u-lst clearfix" style="display: none" ref="ulst">
+        <div class="schlist">
+          <p class="note">
+            <a class="underline">搜索"{{ searchText }}"相关用户&gt;</a>
+          </p>
+          <div class="rap clearfix">
+            <div class="item clearfix">
+              <ul
+                class="clearfix"
+                v-for="(item, index) in searchList.order"
+                :key="index"
+              >
+                <div class="hd clearfix">
+                  <i class="songs" v-show="item == 'songs'"></i>
+                  <i class="artists" v-show="item == 'artists'"></i>
+                  <i class="albums" v-show="item == 'albums'"></i>
+                  <i class="playlists" v-show="item == 'playlists'"></i>
+                  <span v-show="item == 'songs'">单曲</span>
+                  <span v-show="item == 'artists'">歌手</span>
+                  <span v-show="item == 'albums'">专辑</span>
+                  <span v-show="item == 'playlists'">歌单</span>
+                </div>
+                <div class="odd clearfix">
+                  <li
+                    v-for="(attr, index) in searchList[`${item}`]"
+                    :key="index"
+                  >
+                    <i class="over" @click="goSearch(item, attr.id)">
+                      {{ attr.name }}-
+                      <span
+                        v-show="item == 'songs'"
+                        v-for="(t, index) in attr.artists"
+                        :key="index"
+                        >{{ t.name }}
+                      </span>
+                      <span v-if="item == 'albums'">{{
+                        attr.artist.name
+                      }}</span>
+                    </i>
+                  </li>
+                </div>
+              </ul>
             </div>
           </div>
+        </div>
       </div>
     </div>
     <!-- 登录弹框 -->
@@ -191,7 +210,9 @@
             </div>
           </div>
           <!-- 登录按钮 -->
-          <button class="loginButton" @click="loginButton" ref="loginButton">登录</button>
+          <button class="loginButton" @click="loginButton" ref="loginButton">
+            登录
+          </button>
         </div>
         <div class="loginWithPhoneFooter">
           <div class="changeLoginWayInPhoneBox pointer" @click="otherLogin">
@@ -274,27 +295,34 @@ export default {
       // 用户头像
       userImg: "",
       // 搜索内容
-      searchText:'',
+      searchText: "",
       // 搜索建议返回的结果
-      searchList:{},
+      searchList: {},
     };
   },
   methods: {
     GoHome() {
-      if(this.$route.path == '/home/discover')
-        return ;
+      if (this.$route.path == "/home/discover") return;
       this.isActive = 1;
       this.$router.push("/home/discover");
     },
     MyMusic() {
       if (this.isActive == 2) return;
       this.isActive = 2;
-      this.$router.push("/mymusic/playlist"); 
+      this.$router.push("/mymusic/playlist");
     },
     Friend() {
       if (this.isActive == 3) return;
       this.isActive = 3;
       this.$router.push("/friend");
+    },
+    tab() {
+      console.log(this.isActive)
+      if (this.isActive == 4) return;
+      console.log('123')
+
+      this.isActive = 4;
+      this.$router.push("/download");
     },
     Change() {},
     //关闭登录弹窗
@@ -429,16 +457,16 @@ export default {
           }
         }
       }, 1000);
-      timer = setInterval(()=>{
+      timer = setInterval(() => {
         location.reload();
         this.$refs.loginButton.innerHTML = "登录成功!";
         clearInterval(timer);
-      },500);
+      }, 500);
       this.$refs.loginButton.innerHTML = "登录";
     },
     //获取账号信息
     async Account() {
-      const result = await this.$API.reqAccount(localStorage.getItem('COOKIE'));
+      const result = await this.$API.reqAccount(localStorage.getItem("COOKIE"));
       console.log(result);
     },
     //展示个人选项盒子
@@ -456,87 +484,87 @@ export default {
       this.isLogin = false;
       this.$store.dispatch("exit");
       this.hideUserBox();
-      timer = setInterval(()=>{
+      timer = setInterval(() => {
         location.reload();
         clearInterval(timer);
-      },500);
+      }, 500);
     },
     //刷新登录状态
     async refreshLogin() {
-      let result = await this.$API.reqRefresh(localStorage.getItem('COOKIE'));
+      let result = await this.$API.reqRefresh(localStorage.getItem("COOKIE"));
       console.log(result);
     },
     //获取isActive的值
-    getActive(){  
-        //通过当前路径得知active是哪一个
-        setTimeout(() => {
-          let path = this.$route.path;
-          if(path.indexOf('home/') != -1) this.isActive = 1;
-          else if(path.indexOf('mymusic') != -1) this.isActive = 2;
-          else if(path.indexOf('friend') != -1) this.isActive = 3;
-          else if(path.indexOf('download') != -1) this.isActive = 4;
-          else this.isActive = -1;
-        },80);
+    getActive() {
+      //通过当前路径得知active是哪一个
+      setTimeout(() => {
+        let path = this.$route.path;
+        if (path.indexOf("home/") != -1) this.isActive = 1;
+        else if (path.indexOf("mymusic") != -1) this.isActive = 2;
+        else if (path.indexOf("friend") != -1) this.isActive = 3;
+        else if (path.indexOf("download") != -1) this.isActive = 4;
+        else this.isActive = -1;
+      }, 80);
     },
     // 获取搜索建议
-    async getSearchSuggest(){ 
-        let result = await this.$API.reqSerachSuggest(this.searchText);
-        this.searchList = result.result;
+    async getSearchSuggest() {
+      let result = await this.$API.reqSerachSuggest(this.searchText);
+      this.searchList = result.result;
     },
     // 打开搜索框
-    openSearch(){
-      if(this.searchText != ''){
-        this.$refs.ulst.style.display = 'block'
+    openSearch() {
+      if (this.searchText != "") {
+        this.$refs.ulst.style.display = "block";
       }
     },
     // 关闭搜索框
-    closeSearch(){
-        setTimeout(() => {
-          this.$refs.ulst.style.display='none';  
-        }, 100);
+    closeSearch() {
+      setTimeout(() => {
+        this.$refs.ulst.style.display = "none";
+      }, 100);
     },
     // 搜索
-    goSearch(path,id){
-      path = path.substr(0,path.length-1);
-      if(path == 'artist') path='artist/song';
+    goSearch(path, id) {
+      path = path.substr(0, path.length - 1);
+      if (path == "artist") path = "artist/song";
       this.$router.push({
-        path:`/${path}`,
-        query:{
-          id
-        }
-      })
+        path: `/${path}`,
+        query: {
+          id,
+        },
+      });
     },
     Ceater() {},
     Search() {
-      this.$refs.ulst.style.display = 'none';
+      this.$refs.ulst.style.display = "none";
       this.$router.push({
-        path:'/search',
-        query:{
-          keywords:this.searchText,
-        }
-      })
+        path: "/search",
+        query: {
+          keywords: this.searchText,
+        },
+      });
     },
   },
-  computed:{
-    path(){
+  computed: {
+    path() {
       return this.$route.path;
-    }
+    },
   },
   watch: {
-    path(){
-        if(this.$route.path.indexOf('/mymusic') != -1) this.$refs.wrap.style="position:fixed";
-        else this.$refs.wrap.style="position:relative";
-        this.getActive();
+    path() {
+      if (this.$route.path.indexOf("/mymusic") != -1)
+        this.$refs.wrap.style = "position:fixed";
+      else this.$refs.wrap.style = "position:relative";
+      this.getActive();
     },
-    searchText(){
-      if(this.searchText != ''){
+    searchText() {
+      if (this.searchText != "") {
         this.getSearchSuggest();
-        this.$refs.ulst.style.display = 'block';
+        this.$refs.ulst.style.display = "block";
+      } else {
+        this.$refs.ulst.style.display = "none";
       }
-      else{
-         this.$refs.ulst.style.display = 'none';
-      }
-    }
+    },
   },
   mounted() {
     this.getActive();
@@ -548,7 +576,7 @@ export default {
         this.userImg = this.$store.state.login.userInfo.profile.avatarUrl;
       }, 800);
     }
-    this.$bus.$on('appear',()=>{
+    this.$bus.$on("appear", () => {
       this.getCode();
     });
     // this.Account();
@@ -567,7 +595,7 @@ body {
     height: 70px;
     z-index: 1000;
     position: relative;
-    top:0;
+    top: 0;
     background: #242424;
     border-bottom: 1px solid #000;
     .wrap {
@@ -585,7 +613,7 @@ body {
           cursor: pointer;
         }
       }
-      >ul {
+      > ul {
         -webkit-user-select: none;
         -moz-user-select: none;
         -ms-user-select: none;
@@ -680,7 +708,7 @@ body {
           border-radius: 50%;
         }
       }
-      .u-lst{
+      .u-lst {
         position: absolute;
         top: 59px;
         width: 240px;
@@ -692,57 +720,57 @@ body {
         background: #fff;
         box-shadow: 0 4px 7px #555;
         text-shadow: 0 1px 0 rgb(255 255 255 / 90%);
-        .schlist{
+        .schlist {
           width: 100%;
-          .note{
+          .note {
             width: 100%;
             padding: 11px 10px;
             height: 39px;
             border-bottom: 1px solid #979797;
-            a{
+            a {
               color: #000;
-              &:hover{
+              &:hover {
                 color: #000;
               }
             }
           }
-          .rap{
+          .rap {
             width: 100%;
-            .item{
+            .item {
               width: 100%;
               display: block;
-              ul{
+              ul {
                 width: 100%;
-                .hd{
+                .hd {
                   float: left;
                   width: 63px;
                   padding: 10px 0 0 10px;
-                  i{
+                  i {
                     float: left;
                     margin: 2px 4px 0 0;
                     width: 14px;
                     height: 15px;
-                    background: url('../images/icon.png');
+                    background: url("../images/icon.png");
                   }
-                  .songs{
+                  .songs {
                     background-position: -35px -300px;
                   }
-                  .artists{
+                  .artists {
                     background-position: -50px -300px;
                   }
-                  .albums{
+                  .albums {
                     background-position: -35px -320px;
                   }
-                  .playlists{
+                  .playlists {
                     background-position: -50px -320px;
                   }
-                  span{
+                  span {
                     line-height: 15px;
                     text-align: left;
                     font-size: 12px;
                   }
                 }
-                .odd{
+                .odd {
                   float: left;
                   width: 173px;
                   background: #f9f8f8;
@@ -751,16 +779,16 @@ body {
                   padding: 6px 0 5px;
                   border-top: 1px solid #e2e2e2;
                   border-left: 1px solid #e2e2e2;
-                  li{
+                  li {
                     width: 100%;
-                    
-                    i{
+
+                    i {
                       padding-left: 10px;
                       display: block;
                       height: 24px;
                       color: #000;
                       line-height: 24px;
-                      &:hover{
+                      &:hover {
                         color: #000;
                         background-color: #ddd;
                         cursor: pointer;

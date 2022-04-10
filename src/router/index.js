@@ -8,7 +8,7 @@ const routes = [
     path:'/download',
     component:()=>import(/* webpackChunkName: "download" */ '../components/Download'),
   },
-  { path: '/', redirect: '/home/discover' },
+  { path: '*', redirect: '/home/discover' },
   {
     path: '/home',
     component: () => import(/* webpackChunkName: "home" */ '../components/Home'),
@@ -16,11 +16,15 @@ const routes = [
 
       {
         path: 'discover',
-        component: () => import(/* webpackChunkName: "home" */ '../components/Home/Discover/index.vue')
+        component: () => import(/* webpackChunkName: "home" */ '../components/Home/Discover')
       },
       {
         path: 'toplist/:id?',
         component: () => import(/* webpackChunkName: "home" */ '../components/Home/TopList')
+      },
+      {
+        path:'playlist',
+        component:()=>import(/* webpackChunkName: "home" */ '../components/Home/PlayList'),
       },
       {
         path: 'djradio',
@@ -33,6 +37,10 @@ const routes = [
       {
         path: 'album',
         component: () => import(/* webpackChunkName: "home" */ '../components/Home/Album')
+      },
+      {
+        path:'download',
+        component:()=>import(/* webpackChunkName: "home" */ '../components/Download'),
       }
     ]
   },
@@ -41,8 +49,8 @@ const routes = [
     component: () => import(/* webpackChunkName: "mymusic" */ '../components/MyMusic'),
     children: [
       {
-        path: '/playlist',
-        component: () => import(/* webpackChunkName: "playlist" */ '../components/PlayList')
+        path: 'playlist',
+        component: () => import(/* webpackChunkName: "mymusic" */ '../components/MyMusic/Logged/Playlist')
       }
     ]
   },
@@ -105,9 +113,13 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    //返回的这个y=0，代表滚动条在最上方
+    return { y: 0 };
+}
 })
 
 export default router

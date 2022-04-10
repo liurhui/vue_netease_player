@@ -4,20 +4,20 @@
     <router-view></router-view>
     <GoTop />
     <Music></Music>
-    <MyFooter v-show="isShowFoot" />
+    <!-- <MyFooter v-show="isShowFoot" /> -->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import Header from "@/base/Header";
-import MyFooter from "@/base/MyFooter";
+// import MyFooter from "@/base/MyFooter";
 import GoTop from "@/base/GoTop";
 import Music from "@/base/Music";
 export default {
   name: "App",
   components: {
     Header,
-    MyFooter,
+    // MyFooter,
     GoTop,
     Music,
   },
